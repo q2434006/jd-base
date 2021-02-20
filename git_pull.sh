@@ -29,7 +29,6 @@ ContentDropTask=${ShellDir}/drop_task
 SendCount=${ShellDir}/send_count
 isTermux=${ANDROID_RUNTIME_ROOT}${ANDROID_ROOT}
 WhichDep=$(grep "/jd-base" "${ShellDir}/.git/config")
-Scripts2URL=https://github.com/shylocks/Loon
 
 if [[ ${WhichDep} == *github* ]]; then
   ScriptsURL=https://gitee.com/lxk0301/jd_scripts
@@ -74,23 +73,6 @@ function Git_PullScripts {
   echo
 }
 
-## 克隆scripts2
-function Git_CloneScripts2 {
-  echo -e "克隆shylocks脚本，原地址：${Scripts2URL}\n"
-  git clone -b main ${Scripts2URL} ${Scripts2Dir}
-  ExitStatusScripts2=$?
-  echo
-}
-
-## 更新scripts2
-function Git_PullScripts2 {
-  echo -e "更新shylocks脚本，原地址：${Scripts2URL}\n"
-  cd ${Scripts2Dir}
-  git fetch --all
-  ExitStatusScripts2=$?
-  git reset --hard origin/main
-  echo
-}
 
 ## 用户数量UserSum
 function Count_UserSum {
@@ -204,6 +186,8 @@ function Npm_InstallSub {
     echo -e "检测到本机安装了 yarn，使用 yarn 替代 npm...\n"
     yarn install || yarn install --registry=https://registry.npm.taobao.org
   fi
+  npm i cheeri
+  npm i ws
 }
 
 ## npm install
@@ -352,8 +336,6 @@ if [ ${ExitStatusShell} -eq 0 ]; then
   echo -e "--------------------------------------------------------------\n"
   [ -f ${ScriptsDir}/package.json ] && PackageListOld=$(cat ${ScriptsDir}/package.json)
   [ -d ${ScriptsDir}/.git ] && Git_PullScripts || Git_CloneScripts
- ## [ -d ${Scripts2Dir}/.git ] && Git_PullScripts2 || Git_CloneScripts2
- ## cp -f ${Scripts2Dir}/jd_*.js ${ScriptsDir}
 fi
 
 ## 执行各函数
