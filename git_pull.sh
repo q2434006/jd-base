@@ -187,6 +187,7 @@ function Npm_InstallSub {
     echo -e "检测到本机安装了 yarn，使用 yarn 替代 npm...\n"
     yarn install || yarn install --registry=https://registry.npm.taobao.org
   fi
+  echo "安装扩展插件"
   npm i cheeri
   npm i ws
 }
